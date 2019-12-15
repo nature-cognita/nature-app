@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Text } from "react-native-paper";
 import MapView, { Marker, LatLng, Region, Callout } from "react-native-maps";
-import { Location, Permissions, Constants } from "expo";
+import * as Permissions from "expo-permissions";
 
 const testMarkers = [
   {
@@ -38,16 +38,29 @@ export const MapScreen: React.FC = () => {
 
   const [markers, setMarkers] = useState<Array<MapMarker>>(testMarkers);
 
+  const [marginBottom, setMarginBottom] = useState(1); //TODO: https://github.com/react-native-community/react-native-maps/issues/2010
+
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion);
+  };
+
+  const onMapReady = async () => {
+    Permissions.askAsync(Permissions.LOCATION).then(_status =>
+      setMarginBottom(0)
+    );
   };
 
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.mapStyle}
-        initialRegion={region}
+        style={[styles.mapStyle, { marginBottom: marginBottom }]}
+        initialRegion={region} //TODO: Get initial region from location
         onRegionChange={onRegionChange}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        followsUserLocation={true}
+        showsCompass={true}
+        onMapReady={onMapReady}
       >
         {markers.map(marker => (
           <Marker
