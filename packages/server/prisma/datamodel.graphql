@@ -1,0 +1,44 @@
+type User {
+  id: ID! @id
+  email: String! @unique
+  name: String!
+}
+
+type Location {
+  id: ID! @id
+  latitude: Float!
+  longitude: Float!
+  devices: [Device!]!
+}
+
+type Device {
+  id: ID! @id
+  label: String
+  location: Location!
+  sensors: [Sensor!]!
+}
+
+type Sensor {
+  id: ID! @id
+  type: SensorType!
+  location: SensorLocation!
+  records: [Record!]!
+}
+
+type Record {
+  id: ID! @id
+  timestamp: DateTime!
+  value: Float!
+  sensor: Sensor! @relation(link: INLINE)
+}
+
+enum SensorType {
+  HUMIDITY
+  LIGHT
+  NOISE
+}
+
+enum SensorLocation {
+  INTERNAL
+  EXTERNAL
+}

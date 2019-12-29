@@ -1,8 +1,9 @@
 {
   "name": "nature-cognita",
+  "version": "independent",
   "private": true,
   "scripts": {
-
+    "bootstrap": "lerna bootstrap"
   },
   "workspaces": [
     "packages/*"
