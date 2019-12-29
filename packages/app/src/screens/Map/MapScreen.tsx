@@ -41,7 +41,7 @@ export const MapScreen: React.FC = () => {
   const [marginBottom, setMarginBottom] = useState(1); //TODO: https://github.com/react-native-community/react-native-maps/issues/2010
 
   const onRegionChange = (newRegion: Region) => {
-    setRegion(newRegion);
+    setRegion(newRegion); //TODO: Use setRegion to set location on user after GPS is available.
   };
 
   const onMapReady = async () => {
@@ -54,7 +54,7 @@ export const MapScreen: React.FC = () => {
     <View style={styles.container}>
       <MapView
         style={[styles.mapStyle, { marginBottom: marginBottom }]}
-        initialRegion={region} //TODO: Get initial region from location
+        initialRegion={region} //TODO: Get initial region from user latest location
         onRegionChange={onRegionChange}
         showsUserLocation={true}
         showsMyLocationButton={true}
