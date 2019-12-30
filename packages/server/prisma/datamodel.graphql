@@ -14,14 +14,14 @@ type Location {
 type Device {
   id: ID! @id
   label: String
-  location: Location!
+  location: Location! @relation(link: INLINE)
   sensors: [Sensor!]!
 }
 
 type Sensor {
   id: ID! @id
   type: SensorType!
-  location: SensorLocation!
+  usage: SensorUsage!
   records: [Record!]!
 }
 
@@ -30,6 +30,8 @@ type Record {
   timestamp: DateTime!
   value: Float!
   sensor: Sensor! @relation(link: INLINE)
+  device: Device! @relation(link: INLINE)
+  location: Location! @relation(link: INLINE)
 }
 
 enum SensorType {
@@ -38,7 +40,7 @@ enum SensorType {
   NOISE
 }
 
-enum SensorLocation {
+enum SensorUsage {
   INTERNAL
   EXTERNAL
 }

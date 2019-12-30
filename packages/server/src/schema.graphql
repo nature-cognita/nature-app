@@ -1,0 +1,26 @@
+# import DateTime from './generated/prisma.graphql'
+# import Device from './generated/prisma.graphql'
+# import Record from './generated/prisma.graphql'
+
+input RecordsFromDeviceInput {
+  deviceId: ID!
+  fromDate: DateTime
+  toDate: DateTime
+}
+
+type StoreRecordsInput {
+  records: [Record!]!
+}
+
+type StoreRecordsPayload {
+  status: String!
+}
+
+type Query {
+  devices: [Device]!
+  recordsFromDevice(input: RecordsFromDeviceInput!): [Record]!
+}
+
+type Mutation {
+  storeRecords(input: StoreRecordsInput): StoreRecordsPayload
+}

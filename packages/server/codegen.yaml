@@ -7,4 +7,4 @@ generates:
     config:
       noSchemaStitching: true
       useIndexSignature: true
-      contextType: ../resolvers/types#PrismaContext
+      # contextType: ../resolvers/types#PrismaContext #TODO Update with proper context if needed
