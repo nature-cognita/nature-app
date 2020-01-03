@@ -6,6 +6,7 @@ type User {
 
 type Location {
   id: ID! @id
+  label: String!
   latitude: Float!
   longitude: Float!
   devices: [Device!]!
@@ -23,6 +24,7 @@ type Sensor {
   type: SensorType!
   usage: SensorUsage!
   records: [SensorRecord!]!
+  device: Device @relation(link: INLINE)
 }
 
 type SensorRecord {
@@ -30,8 +32,6 @@ type SensorRecord {
   timestamp: DateTime!
   value: Float!
   sensor: Sensor! @relation(link: INLINE)
-  device: Device! @relation(link: INLINE)
-  location: Location! @relation(link: INLINE)
 }
 
 enum SensorType {

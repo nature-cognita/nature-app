@@ -7,9 +7,7 @@ const recordsMutations: MutationResolvers = {
       prisma.createSensorRecord({
         value: record.value,
         timestamp: record.timestamp,
-        device: { connect: { id: record.deviceId } },
-        sensor: { connect: { id: record.sensorId } },
-        location: { connect: { id: record.locationId } }
+        sensor: { connect: { id: record.sensorId } }
       });
     });
     return { status };
