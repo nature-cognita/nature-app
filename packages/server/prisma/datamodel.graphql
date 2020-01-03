@@ -22,10 +22,10 @@ type Sensor {
   id: ID! @id
   type: SensorType!
   usage: SensorUsage!
-  records: [Record!]!
+  records: [SensorRecord!]!
 }
 
-type Record {
+type SensorRecord {
   id: ID! @id
   timestamp: DateTime!
   value: Float!

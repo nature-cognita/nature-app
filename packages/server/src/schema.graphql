@@ -1,6 +1,6 @@
 # import DateTime from './generated/prisma.graphql'
 # import Device from './generated/prisma.graphql'
-# import Record from './generated/prisma.graphql'
+# import SensorRecord from './generated/prisma.graphql'
 
 input RecordsFromDeviceInput {
   deviceId: ID!
@@ -9,7 +9,7 @@ input RecordsFromDeviceInput {
 }
 
 type StoreRecordsInput {
-  records: [Record!]!
+  records: [SensorRecord!]!
 }
 
 type StoreRecordsPayload {
@@ -18,7 +18,7 @@ type StoreRecordsPayload {
 
 type Query {
   devices: [Device]!
-  recordsFromDevice(input: RecordsFromDeviceInput!): [Record]!
+  recordsFromDevice(input: RecordsFromDeviceInput!): [SensorRecord]!
 }
 
 type Mutation {
