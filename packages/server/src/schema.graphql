@@ -8,8 +8,16 @@ input RecordsFromDeviceInput {
   toDate: DateTime
 }
 
+type RawData {
+  timestamp: DateTime!
+  value: Float!
+  sensorId: ID!
+  deviceId: ID!
+  locationId: ID!
+}
+
 type StoreRecordsInput {
-  records: [SensorRecord!]!
+  records: [RawData!]!
 }
 
 type StoreRecordsPayload {
@@ -22,5 +30,5 @@ type Query {
 }
 
 type Mutation {
-  storeRecords(input: StoreRecordsInput): StoreRecordsPayload
+  storeRecords(input: StoreRecordsInput!): StoreRecordsPayload
 }
