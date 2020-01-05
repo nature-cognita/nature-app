@@ -5,7 +5,12 @@ import path from "path";
 import express from "express";
 
 import { Resolvers } from "generated/types";
-import { deviceQueries, recordQueries, recordsMutations } from "resolvers";
+import {
+  deviceQueries,
+  deviceResolvers,
+  recordQueries,
+  recordsMutations
+} from "resolvers";
 
 const resolvers: Resolvers = {
   Query: {
@@ -15,6 +20,10 @@ const resolvers: Resolvers = {
 
   Mutation: {
     ...recordsMutations
+  },
+
+  Device: {
+    ...deviceResolvers
   }
 };
 
