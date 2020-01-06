@@ -24,7 +24,7 @@ type Sensor {
   type: SensorType!
   usage: SensorUsage!
   records: [SensorRecord!]!
-  device: Device @relation(link: INLINE)
+  device: Device! @relation(link: INLINE)
 }
 
 type SensorRecord {
