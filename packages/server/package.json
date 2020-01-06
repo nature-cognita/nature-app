@@ -6,13 +6,10 @@
     "deploy:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma deploy",
     "reset:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma reset --force",
     "dev": "yarn generate && cross-env NODE_ENV=development ts-node-dev -r dotenv-flow/config -r tsconfig-paths/register src/index.ts",
-    "generate": "prisma generate && graphql-codegen",
+    "generate": "prisma generate",
     "start": "yarn deploy && yarn generate && NODE_ENV=production ts-node -T -r dotenv-flow/config -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
-    "@graphql-codegen/cli": "1.10.0",
-    "@graphql-codegen/typescript": "1.10.0",
-    "@graphql-codegen/typescript-resolvers": "1.10.0",
     "apollo-server-express": "2.9.15",
     "ts-node": "8.5.4",
     "tsconfig-paths": "3.9.0",

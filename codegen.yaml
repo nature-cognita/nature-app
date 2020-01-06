@@ -1,0 +1,16 @@
+schema: "./packages/server/src/schema.graphql"
+documents: "./packages/app/src/queries/*.graphql"
+generates:
+  ./packages/server/src/generated/types.d.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      noSchemaStitching: true
+      useIndexSignature: true
+      contextType: ../types#PrismaContext
+  ./packages/app/src/generated/types.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

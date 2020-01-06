@@ -1,0 +1,9 @@
+query DeviceLocations {
+  devices {
+    label
+    location {
+      latitude
+      longitude
+    }
+  }
+}
