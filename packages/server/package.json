@@ -6,7 +6,7 @@
     "deploy:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma deploy",
     "reset:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma reset --force",
     "dev": "yarn generate && cross-env NODE_ENV=development ts-node-dev -r dotenv-flow/config -r tsconfig-paths/register src/index.ts",
-    "generate": "prisma generate",
+    "generate": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma generate",
     "start": "yarn deploy && yarn generate && NODE_ENV=production ts-node -T -r dotenv-flow/config -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
