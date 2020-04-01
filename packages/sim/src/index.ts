@@ -16,6 +16,8 @@ const sensorIds = [
   "ecc56f2b-6073-4cda-9351-8aa4ffe59d61"
 ];
 
+const PLANT_ID = "03b51819-978d-4b85-a5bf-1882168a4569";
+
 const generateData = () => {
   const timestamp = new Date().toISOString();
   const records: Array<SensorRecord> = [];
@@ -32,10 +34,10 @@ const generateData = () => {
 };
 
 const returnData = () => {
-  const responce = { ...storedData };
+  const data = { ...storedData };
   storedData = {};
 
-  return responce;
+  return { id: PLANT_ID, data };
 };
 
 setInterval(generateData, 5000);
