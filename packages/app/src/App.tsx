@@ -16,15 +16,25 @@ const bottomTabNavigator = createMaterialBottomTabNavigator(
       screen: HomeScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="ios-add" size={25} color={tintColor} />
+          <Icon name="md-home" size={25} color={tintColor} />
         )
       }
     },
     Map: {
-      screen: MapScreen
+      screen: MapScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="md-map" size={25} color={tintColor} />
+        )
+      }
     },
     Plant: {
-      screen: PlantScreen
+      screen: PlantScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="md-flower" size={25} color={tintColor} />
+        )
+      }
     }
   },
   {
