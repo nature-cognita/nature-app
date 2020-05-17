@@ -3,11 +3,7 @@
     "name": "Nature Cognita",
     "slug": "nature-cognita",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,14 +15,24 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "packagerOpts": {
       "config": "metro.config.js"
+    },
+    "extra": {
+      "firebaseConfig": {
+        "apiKey": "AIzaSyBMNJiDtcXyjPHmtPq4oHnhtx8xqC6bTtI",
+        "authDomain": "nature-cognita.firebaseapp.com",
+        "databaseURL": "https://nature-cognita.firebaseio.com",
+        "projectId": "nature-cognita",
+        "storageBucket": "nature-cognita.appspot.com",
+        "messagingSenderId": "579540047069",
+        "appId": "1:579540047069:web:e7fe99e624e3ec4af17734",
+        "measurementId": "G-VX23D0T6BF"
+      }
     }
   }
 }

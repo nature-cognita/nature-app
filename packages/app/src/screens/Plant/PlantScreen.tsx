@@ -46,7 +46,7 @@ export const PlantScreen: React.FC = () => {
   const db = SQLite.openDatabase("plantsData");
   initDB();
 
-  const syncPlantData = () => {
+  const downloadPlantData = () => {
     console.log("Sync plant data");
 
     fetch(`${PLANT_URL}`)
@@ -64,8 +64,8 @@ export const PlantScreen: React.FC = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Button icon="sync" mode="contained" onPress={syncPlantData}>
-        Load Plant Data
+      <Button icon="download" mode="contained" onPress={downloadPlantData}>
+        Download plant data
       </Button>
     </View>
   );
