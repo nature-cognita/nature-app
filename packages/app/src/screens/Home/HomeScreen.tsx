@@ -16,16 +16,7 @@ type SensorRecord = {
 
 export const HomeScreen: React.FC = () => {
   firebase.initializeApp(firebaseConfig);
-
-  const dbh = firebase.firestore();
-  dbh
-    .collection("characters")
-    .doc("mario")
-    .set({
-      employment: "plumber",
-      outfitColor: "red",
-      specialAttack: "fireball",
-    });
+  const firestore = firebase.firestore();
 
   console.disableYellowBox = true;
 
@@ -46,6 +37,17 @@ export const HomeScreen: React.FC = () => {
             const sensorValues: Array<SensorRecord> = JSON.parse(
               item["sensor_values"]
             );
+
+            sensorValues.forEach((record) => {
+              firestore
+                .collection("records")
+                .doc()
+                .set({
+                  date: date,
+                  sensor_id: record.id,
+                  value: record.value,
+                });
+            });
 
             console.log(sensorValues);
           }
