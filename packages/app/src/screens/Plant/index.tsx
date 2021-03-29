@@ -1,1 +1,1 @@
-export * from "./PlantScreen";
+export { PlantScreen } from "./PlantScreen";

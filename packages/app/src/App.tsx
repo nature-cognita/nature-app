@@ -17,28 +17,28 @@ const bottomTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Icon name="md-home" size={25} color={tintColor} />
-        )
-      }
+        ),
+      },
     },
     Map: {
       screen: MapScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Icon name="md-map" size={25} color={tintColor} />
-        )
-      }
+        ),
+      },
     },
     Plant: {
       screen: PlantScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Icon name="md-flower" size={25} color={tintColor} />
-        )
-      }
-    }
+        ),
+      },
+    },
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Home",
   }
 );
 

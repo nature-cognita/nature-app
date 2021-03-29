@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
 import { Button } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
 const PLANT_URL = "http://localhost:3000";
