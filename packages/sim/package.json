@@ -2,7 +2,7 @@
   "name": "nature-sim",
   "version": "0.0.1",
   "scripts": {
-    "dev": "adb reverse tcp:3000 tcp:3000 && cross-env NODE_ENV=development ts-node-dev -r dotenv-flow/config -r tsconfig-paths/register src/index.ts",
+    "dev": "adb reverse tcp:4000 tcp:4000 && cross-env NODE_ENV=development ts-node-dev -r dotenv-flow/config -r tsconfig-paths/register src/index.ts",
     "start": "cross-env NODE_ENV=production ts-node -T -r dotenv-flow/config -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {

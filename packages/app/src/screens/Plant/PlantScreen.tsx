@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
-const PLANT_URL = "http://localhost:3000";
+const PLANT_URL = "http://localhost:4000";
 
 export const PlantScreen: React.FC = () => {
   const initDB = () => {
