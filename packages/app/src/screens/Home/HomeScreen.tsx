@@ -25,9 +25,12 @@ export const HomeScreen: React.FC = () => {
     console.log("Cleaning up cache");
 
     db.transaction((tx) => {
-      tx.executeSql("DELETE FROM data");
-      tx.executeSql("VACUUM");
+      tx.executeSql("DELETE FROM data", [], (_tx, result) => {
+        console.log(result);
+      });
     });
+
+    // TODO: Update records counter
   };
 
   const [storeRecords] = useMutation(ADD_SENSOR_RECORDS);

@@ -1,12 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
 const PLANT_URL = "http://localhost:4000";
 
 export const PlantScreen: React.FC = () => {
+  const [recordsCount, setRecordsCount] = useState(0); // TODO: Move to APP State
+
+  const updateRecordsCount = (tx: SQLite.SQLTransaction) => {
+    tx.executeSql("SELECT * FROM data", [], (_tx, result) => {
+      setRecordsCount(result.rows.length);
+    });
+  };
+
   const initDB = () => {
     console.log("Initializing DB");
+
     db.transaction((tx) => {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS data(date text, sensor_values text);",
@@ -21,6 +30,8 @@ export const PlantScreen: React.FC = () => {
           return true;
         }
       );
+
+      updateRecordsCount(tx);
     });
   };
 
@@ -40,11 +51,13 @@ export const PlantScreen: React.FC = () => {
           return true;
         }
       );
+
+      updateRecordsCount(tx);
     });
   };
 
   const db = SQLite.openDatabase("plantsData");
-  initDB();
+  initDB(); // TODO: Move to context
 
   const downloadPlantData = () => {
     console.log("Sync plant data");
@@ -64,6 +77,7 @@ export const PlantScreen: React.FC = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Stored Records Count: {recordsCount} </Text>
       <Button icon="download" mode="contained" onPress={downloadPlantData}>
         Download plant data
       </Button>
