@@ -33,18 +33,7 @@ export const MapScreen: React.FC = () => {
 
   const { data, loading, error } = useQuery(GET_DEVICES);
 
-  if (error) {
-    console.log(error);
-
-    return <></>;
-  }
-  if (loading) {
-    console.log("Loading data");
-
-    return <></>;
-  }
-
-  const devices = data["devices"];
+  const devices = loading || error ? [] : data["devices"];
 
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion); //TODO: Use setRegion to set location on user after GPS is available.
@@ -58,28 +47,31 @@ export const MapScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={[styles.mapStyle, { marginBottom: marginBottom }]}
-        initialRegion={region} //TODO: Get initial region from user latest location
-        onRegionChange={onRegionChange}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        followsUserLocation={true}
-        showsCompass={true}
-        onMapReady={onMapReady}
-      >
-        {devices.map((device) => (
-          <Marker
-            coordinate={device.location}
-            title={device.label}
-            key={device.id}
-          >
-            <Callout>
-              <Text>{device.label}</Text>
-            </Callout>
-          </Marker>
-        ))}
-      </MapView>
+      {error && <Text style={{ color: "white" }}>Error: {error.message}</Text>}
+      {!error && (
+        <MapView
+          style={[styles.mapStyle, { marginBottom: marginBottom }]}
+          initialRegion={region} //TODO: Get initial region from user latest location
+          onRegionChange={onRegionChange}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          followsUserLocation={true}
+          showsCompass={true}
+          onMapReady={onMapReady}
+        >
+          {devices.map((device) => (
+            <Marker
+              coordinate={device.location}
+              title={device.label}
+              key={device.id}
+            >
+              <Callout>
+                <Text>{device.label}</Text>
+              </Callout>
+            </Marker>
+          ))}
+        </MapView>
+      )}
     </View>
   );
 };
