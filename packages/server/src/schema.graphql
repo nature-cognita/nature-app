@@ -12,8 +12,6 @@ input RawData {
   timestamp: DateTime!
   value: Float!
   sensorId: ID!
-  deviceId: ID!
-  locationId: ID!
 }
 
 input StoreRecordsInput {

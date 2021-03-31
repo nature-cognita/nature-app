@@ -31,8 +31,13 @@ export const MapScreen: React.FC = () => {
 
   const [marginBottom, setMarginBottom] = useState(1); //TODO: https://github.com/react-native-community/react-native-maps/issues/2010
 
-  const { data, loading } = useQuery(GET_DEVICES);
+  const { data, loading, error } = useQuery(GET_DEVICES);
 
+  if (error) {
+    console.log(error);
+
+    return <></>;
+  }
   if (loading) {
     console.log("Loading data");
 

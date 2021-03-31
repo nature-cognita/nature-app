@@ -1,7 +1,7 @@
 import {
   MutationResolvers,
   QueryResolvers,
-  SensorRecord
+  SensorRecord,
 } from "generated/types";
 
 export const recordQueries: QueryResolvers = {
@@ -14,24 +14,28 @@ export const recordQueries: QueryResolvers = {
       where: {
         sensor: { id: sensorId },
         timestamp_gte: fromDate,
-        timestamp_lte: toDate
-      }
+        timestamp_lte: toDate,
+      },
     })) as Array<SensorRecord>;
 
     return records;
-  }
+  },
 };
 
 export const recordsMutations: MutationResolvers = {
   storeRecords: (_parent, { input: { records } }, { prisma }) => {
     const status = "Records stored sucessfully";
-    records.forEach(record => {
-      prisma.createSensorRecord({
+    records.forEach(async (record) => {
+      const result = await prisma.createSensorRecord({
         value: record.value,
         timestamp: record.timestamp,
-        sensor: { connect: { id: record.sensorId } }
+        sensor: { connect: { id: record.sensorId } },
       });
+
+      console.log("Object stored: ");
+      console.log(result);
     });
+
     return { status };
-  }
+  },
 };

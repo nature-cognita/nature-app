@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
+import { gql, useMutation } from "@apollo/client";
 
 // TODO: Share common types between apps
 type SensorRecord = {
@@ -9,31 +10,62 @@ type SensorRecord = {
   value: Number;
 };
 
+const ADD_SENSOR_RECORDS = gql`
+  mutation StoreRecords($input: StoreRecordsInput!) {
+    storeRecords(input: $input) {
+      status
+    }
+  }
+`;
+
 export const HomeScreen: React.FC = () => {
+  const db = SQLite.openDatabase("plantsData");
+
+  const cleanupCache = () => {
+    console.log("Cleaning up cache");
+
+    db.transaction((tx) => {
+      tx.executeSql("DELETE FROM data");
+      tx.executeSql("VACUUM");
+    });
+  };
+
+  const [storeRecords] = useMutation(ADD_SENSOR_RECORDS);
+
   const uploadData = () => {
     console.log("Uploding data!");
-
-    const db = SQLite.openDatabase("plantsData");
 
     db.transaction((tx) => {
       tx.executeSql(
         "SELECT * from data;",
         [],
-        (_tx, result) => {
+        async (_tx, result) => {
           for (let i = 0; i < result.rows.length; i++) {
             const item = result.rows.item(i);
 
             const date = item["date"];
+            console.log(date);
+
             const sensorValues: Array<SensorRecord> = JSON.parse(
               item["sensor_values"]
             );
 
-            sensorValues.forEach((record) => {
-              // TODO: Run GQL insert
+            const records = sensorValues.map((record) => {
+              return {
+                timestamp: date,
+                sensorId: record.id,
+                value: record.value,
+              };
             });
 
-            console.log(sensorValues);
+            console.log(records);
+
+            await storeRecords({
+              variables: { input: { records } },
+            });
           }
+
+          cleanupCache();
         },
         (_tx, error) => {
           console.log(error);

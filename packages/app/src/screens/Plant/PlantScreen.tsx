@@ -6,6 +6,7 @@ const PLANT_URL = "http://localhost:4000";
 
 export const PlantScreen: React.FC = () => {
   const initDB = () => {
+    console.log("Initializing DB");
     db.transaction((tx) => {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS data(date text, sensor_values text);",
