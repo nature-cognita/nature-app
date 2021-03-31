@@ -1,25 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Text } from "react-native-paper";
-import MapView, { Marker, LatLng, Region, Callout } from "react-native-maps";
+import MapView, { Marker, Region, Callout } from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import { useQuery, gql } from "@apollo/client";
-import { Device } from "generated/types";
-
-const testMarkers = [
-  {
-    id: "0",
-    coordinate: { latitude: 37.763056, longitude: -122.4463657 },
-    title: "test0",
-    description: "This is test 0 marker",
-  },
-  {
-    id: "1",
-    coordinate: { latitude: 37.7663521, longitude: -122.4443481 },
-    title: "test1",
-    description: "This is test 1 marker",
-  },
-];
 
 const testInitialRegion = {
   latitude: 37.78825,
@@ -28,16 +12,10 @@ const testInitialRegion = {
   longitudeDelta: 0.0421,
 };
 
-type MapMarker = {
-  id: string;
-  coordinate: LatLng;
-  title: string;
-  description?: string;
-};
-
 const GET_DEVICES = gql`
   {
     devices {
+      id
       label
       location {
         label
@@ -51,14 +29,15 @@ const GET_DEVICES = gql`
 export const MapScreen: React.FC = () => {
   const [region, setRegion] = useState<Region>(testInitialRegion);
 
-  // const [devices, setDevices] = useState<Array<Device>>([]);
-
   const [marginBottom, setMarginBottom] = useState(1); //TODO: https://github.com/react-native-community/react-native-maps/issues/2010
 
   const { data, loading } = useQuery(GET_DEVICES);
 
-  if (loading) return;
-  // console.log(data);
+  if (loading) {
+    console.log("Loading data");
+
+    return <></>;
+  }
 
   const devices = data["devices"];
 
@@ -103,7 +82,7 @@ export const MapScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#000000",
     alignItems: "center",
     justifyContent: "center",
   },
