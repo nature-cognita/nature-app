@@ -51,8 +51,6 @@ export const PlantScreen: React.FC = () => {
           return true;
         }
       );
-
-      updateRecordsCount(tx);
     });
   };
 
@@ -72,7 +70,12 @@ export const PlantScreen: React.FC = () => {
           saveData(date, JSON.stringify(value));
         });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        db.transaction((tx) => {
+          updateRecordsCount(tx);
+        });
+      });
   };
 
   return (
