@@ -30,8 +30,8 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.7",
-    "react-three-fiber": "^5.3.22",
-    "three": "0.122.0"
+    "react-three-fiber": "^5.1.7",
+    "three": "^0.122.0"
   },
   "devDependencies": {
     "@babel/core": "7.7.4",
