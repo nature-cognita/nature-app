@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import { gql, useMutation } from "@apollo/client";
-import { DatabaseContext } from "../../store";
+import { DatabaseContext, recordsCountAtom } from "../../store";
+import { useAtom } from "jotai";
 
 // TODO: Share common types between apps
 type SensorRecord = {
@@ -20,6 +21,7 @@ const ADD_SENSOR_RECORDS = gql`
 
 export const HomeScreen: React.FC = () => {
   const { db } = useContext(DatabaseContext);
+  const [_recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
 
   const cleanupCache = () => {
     console.log("Cleaning up cache");
@@ -30,7 +32,7 @@ export const HomeScreen: React.FC = () => {
       });
     });
 
-    // TODO: Update records counter
+    setRecordsCount(0);
   };
 
   const [storeRecords] = useMutation(ADD_SENSOR_RECORDS);

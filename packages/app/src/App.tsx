@@ -6,6 +6,7 @@ import { createAppContainer } from "react-navigation";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { Provider } from "jotai";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/gql",
@@ -15,7 +16,9 @@ const client = new ApolloClient({
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <AppContainer />
+      <Provider>
+        <AppContainer />
+      </Provider>
     </ApolloProvider>
   );
 };

@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
-import { DatabaseContext } from "../../store";
+import { DatabaseContext, recordsCountAtom } from "../../store";
 import { useContext } from "react";
+import { useAtom } from "jotai";
 const PLANT_URL = "http://localhost:4000";
 
 export const PlantScreen: React.FC = () => {
-  const [recordsCount, setRecordsCount] = useState(0); // TODO: Move to APP State
+  const [recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
   const { db } = useContext(DatabaseContext);
 
   const updateRecordsCount = (tx: SQLite.SQLTransaction) => {
