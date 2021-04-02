@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
-import * as SQLite from "expo-sqlite";
 import { gql, useMutation } from "@apollo/client";
+import { DatabaseContext } from "../../store";
 
 // TODO: Share common types between apps
 type SensorRecord = {
@@ -19,7 +19,7 @@ const ADD_SENSOR_RECORDS = gql`
 `;
 
 export const HomeScreen: React.FC = () => {
-  const db = SQLite.openDatabase("plantsData");
+  const { db } = useContext(DatabaseContext);
 
   const cleanupCache = () => {
     console.log("Cleaning up cache");

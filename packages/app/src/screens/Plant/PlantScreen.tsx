@@ -2,36 +2,17 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
+import { DatabaseContext } from "../../store";
+import { useContext } from "react";
 const PLANT_URL = "http://localhost:4000";
 
 export const PlantScreen: React.FC = () => {
   const [recordsCount, setRecordsCount] = useState(0); // TODO: Move to APP State
+  const { db } = useContext(DatabaseContext);
 
   const updateRecordsCount = (tx: SQLite.SQLTransaction) => {
     tx.executeSql("SELECT * FROM data", [], (_tx, result) => {
       setRecordsCount(result.rows.length);
-    });
-  };
-
-  const initDB = () => {
-    console.log("Initializing DB");
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS data(date text, sensor_values text);",
-        [],
-        (_tx, _result) => {
-          console.log("Table created successfully");
-        },
-        (_tx, error) => {
-          console.log("Can't create table");
-          console.log(error);
-
-          return true;
-        }
-      );
-
-      updateRecordsCount(tx);
     });
   };
 
@@ -53,9 +34,6 @@ export const PlantScreen: React.FC = () => {
       );
     });
   };
-
-  const db = SQLite.openDatabase("plantsData");
-  initDB(); // TODO: Move to context
 
   const downloadPlantData = () => {
     console.log("Sync plant data");
