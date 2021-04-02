@@ -2,8 +2,8 @@ import React from "react";
 
 import { registerRootComponent } from "expo";
 import { HomeScreen, MapScreen, PlantScreen } from "screens";
-import { createAppContainer } from "react-navigation";
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Provider } from "jotai";
@@ -17,44 +17,60 @@ const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <Provider>
-        <AppContainer />
+        <NavigationContainer>
+          <RootTabs />
+        </NavigationContainer>
       </Provider>
     </ApolloProvider>
   );
 };
 
-const bottomTabNavigator = createMaterialBottomTabNavigator(
-  {
-    Home: {
-      screen: HomeScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="md-home" size={25} color={tintColor} />
-        ),
-      },
-    },
-    Map: {
-      screen: MapScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="md-map" size={25} color={tintColor} />
-        ),
-      },
-    },
-    Plant: {
-      screen: PlantScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="md-flower" size={25} color={tintColor} />
-        ),
-      },
-    },
-  },
-  {
-    initialRouteName: "Home",
-  }
-);
+const Tabs = createMaterialBottomTabNavigator();
 
-const AppContainer = createAppContainer(bottomTabNavigator);
+const RootTabs = () => {
+  return (
+    <Tabs.Navigator initialRouteName="Home">
+      <Tabs.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: "md-home",
+        }}
+      />
+    </Tabs.Navigator>
+  );
+};
+
+// const bottomTabNavigator = createMaterialBottomTabNavigator(
+//   {
+//     Home: {
+//       screen: HomeScreen,
+//       navigationOptions: {
+//         tabBarIcon: ({ tintColor }) => (
+//           <Icon name="md-home" size={25} color={tintColor} />
+//         ),
+//       },
+//     },
+//     Map: {
+//       screen: MapScreen,
+//       navigationOptions: {
+//         tabBarIcon: ({ tintColor }) => (
+//           <Icon name="md-map" size={25} color={tintColor} />
+//         ),
+//       },
+//     },
+//     Plant: {
+//       screen: PlantScreen,
+//       navigationOptions: {
+//         tabBarIcon: ({ tintColor }) => (
+//           <Icon name="md-flower" size={25} color={tintColor} />
+//         ),
+//       },
+//     },
+//   },
+//   {
+//     initialRouteName: "Home",
+//   }
+// );
 
 registerRootComponent(App);
