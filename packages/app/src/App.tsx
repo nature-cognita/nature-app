@@ -5,8 +5,9 @@ import { HomeScreen, MapScreen, PlantScreen } from "screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Provider as PaperProvider } from "react-native-paper";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { Provider } from "jotai";
+import { Provider as JotaiProvider } from "jotai";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/gql",
@@ -16,11 +17,13 @@ const client = new ApolloClient({
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <Provider>
-        <NavigationContainer>
-          <RootTabs />
-        </NavigationContainer>
-      </Provider>
+      <JotaiProvider>
+        <PaperProvider>
+          <NavigationContainer>
+            <RootTabs />
+          </NavigationContainer>
+        </PaperProvider>
+      </JotaiProvider>
     </ApolloProvider>
   );
 };
@@ -34,43 +37,31 @@ const RootTabs = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: "md-home",
+          tabBarIcon: ({ color }) => (
+            <Icon name="md-home" size={25} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="md-map" size={25} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Plant"
+        component={PlantScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="md-flower" size={25} color={color} />
+          ),
         }}
       />
     </Tabs.Navigator>
   );
 };
-
-// const bottomTabNavigator = createMaterialBottomTabNavigator(
-//   {
-//     Home: {
-//       screen: HomeScreen,
-//       navigationOptions: {
-//         tabBarIcon: ({ tintColor }) => (
-//           <Icon name="md-home" size={25} color={tintColor} />
-//         ),
-//       },
-//     },
-//     Map: {
-//       screen: MapScreen,
-//       navigationOptions: {
-//         tabBarIcon: ({ tintColor }) => (
-//           <Icon name="md-map" size={25} color={tintColor} />
-//         ),
-//       },
-//     },
-//     Plant: {
-//       screen: PlantScreen,
-//       navigationOptions: {
-//         tabBarIcon: ({ tintColor }) => (
-//           <Icon name="md-flower" size={25} color={tintColor} />
-//         ),
-//       },
-//     },
-//   },
-//   {
-//     initialRouteName: "Home",
-//   }
-// );
 
 registerRootComponent(App);
