@@ -1,4 +1,14 @@
 import express from "express";
+import SerialPort from "serialport";
+const sPort = new SerialPort(
+  "/dev/ttyACM1",
+  {
+    baudRate: 9600,
+  },
+  (err) => {
+    console.error(err);
+  }
+);
 
 const app = express();
 const port = 4000;
@@ -32,6 +42,11 @@ const generateData = () => {
   console.log("Added new records:");
 };
 
+// Switches the port into "flowing mode"
+sPort.on("data", (data) => {
+  console.log("Data:", data);
+});
+
 const returnData = () => {
   const data = { ...storedData };
   storedData = {};
@@ -41,7 +56,7 @@ const returnData = () => {
   return { id: PLANT_ID, data };
 };
 
-setInterval(generateData, 5000);
+// setInterval(generateData, 5000);
 
 app.get("/", (_req, res) => res.send(returnData()));
 
