@@ -1,6 +1,7 @@
 import React, { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
-import * as THREE from "three";
+import { THREE } from "expo-three";
+global.THREE = global.THREE || THREE;
 
 const Box = () => {
   useFrame(({ scene }) => {
