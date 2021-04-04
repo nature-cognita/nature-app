@@ -1,5 +1,8 @@
 import express from "express";
 import SerialPort from "serialport";
+// import Readline from "@serialport/parser-readline";
+
+const Readline = SerialPort.parsers.Readline;
 const sPort = new SerialPort(
   "/dev/ttyACM0",
   {
@@ -9,6 +12,8 @@ const sPort = new SerialPort(
     console.error(err);
   }
 );
+
+const parser = sPort.pipe(new Readline({ delimiter: "\r\n" }));
 
 const app = express();
 const port = 4000;
@@ -29,7 +34,7 @@ const sensorIds = [
 const PLANT_ID = "ckmux79e7002s0961irqmfzhq";
 
 // Switches the port into "flowing mode"
-sPort.on("data", (rawData) => {
+parser.on("data", (rawData) => {
   const data = rawData.toString("utf8");
   console.log("Data:", data);
 
@@ -38,9 +43,9 @@ sPort.on("data", (rawData) => {
 
   const timestamp = new Date().toISOString();
   const records: Array<SensorRecord> = [
-    { id: humidityId, value: humidity },
-    { id: temperatureId, value: temperature },
-    { id: voltageId, value: voltage },
+    { id: humidityId, value: parseFloat(humidity) },
+    { id: temperatureId, value: parseFloat(temperature) },
+    { id: voltageId, value: parseFloat(voltage) },
   ];
 
   storedData[timestamp] = records;
