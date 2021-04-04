@@ -28,23 +28,24 @@ const sensorIds = [
 
 const PLANT_ID = "ckmux79e7002s0961irqmfzhq";
 
-const generateData = () => {
-  const timestamp = new Date().toISOString();
-  const records: Array<SensorRecord> = [];
+// Switches the port into "flowing mode"
+sPort.on("data", (rawData) => {
+  const data = rawData.toString("utf8");
+  console.log("Data:", data);
 
-  sensorIds.forEach((id) => {
-    const value = Math.random();
-    records.push({ id, value });
-  });
+  const [humidity, temperature, voltage] = data.split(" ");
+  const [humidityId, temperatureId, voltageId] = sensorIds;
+
+  const timestamp = new Date().toISOString();
+  const records: Array<SensorRecord> = [
+    { id: humidityId, value: humidity },
+    { id: temperatureId, value: temperature },
+    { id: voltageId, value: voltage },
+  ];
 
   storedData[timestamp] = records;
 
-  console.log("Added new records:");
-};
-
-// Switches the port into "flowing mode"
-sPort.on("data", (data) => {
-  console.log("Data:", data.toString("utf8"));
+  console.log(`Added new records: ${records}`);
 });
 
 const returnData = () => {
