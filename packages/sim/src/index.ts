@@ -1,7 +1,7 @@
 import express from "express";
 import SerialPort from "serialport";
 const sPort = new SerialPort(
-  "/dev/ttyACM1",
+  "/dev/ttyACM0",
   {
     baudRate: 9600,
   },
@@ -44,7 +44,7 @@ const generateData = () => {
 
 // Switches the port into "flowing mode"
 sPort.on("data", (data) => {
-  console.log("Data:", data);
+  console.log("Data:", data.toString("utf8"));
 });
 
 const returnData = () => {
