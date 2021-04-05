@@ -1,2 +1,2 @@
 export { DatabaseContext } from "./DatabaseContext";
-export { recordsCountAtom } from "./store";
+export { recordsCountAtom, downloadedDataAtom } from "./store";

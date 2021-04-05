@@ -1,19 +1,51 @@
 import React from "react";
 import { View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button, Text, Headline, Title } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
-import { DatabaseContext, recordsCountAtom } from "../../store";
+import {
+  DatabaseContext,
+  recordsCountAtom,
+  downloadedDataAtom,
+} from "../../store";
 import { useContext } from "react";
 import { useAtom } from "jotai";
-import { Visualisation } from "../../components";
-const PLANT_URL = "http://192.168.31.181:4000"; //TODO: Move to env variable
+import { Visualisation, Chart } from "../../components";
+const PLANT_URL = "http://localhost:4000"; //TODO: Move to env variable
 
 export const PlantScreen: React.FC = () => {
   const [recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
+  const [downloadedData, setDownloadedData] = useAtom(downloadedDataAtom);
+
   const { db } = useContext(DatabaseContext);
 
   const updateRecordsCount = (tx: SQLite.SQLTransaction) => {
     tx.executeSql("SELECT * FROM data", [], (_tx, result) => {
+      const timestamps = [];
+      const humidity = [];
+      const temperature = [];
+      const voltage = [];
+
+      for (let i = 0; i < result.rows.length; i++) {
+        const item = result.rows.item(i);
+
+        const date = item["date"];
+        const sensorValues = JSON.parse(item["sensor_values"]);
+
+        timestamps.push(date);
+        const [hValue, tValue, vValue] = sensorValues;
+
+        humidity.push(hValue.value);
+        temperature.push(tValue.value);
+        voltage.push(vValue.value);
+      }
+
+      setDownloadedData({
+        timestamps,
+        humidity,
+        temperature,
+        voltage,
+      });
+
       setRecordsCount(result.rows.length);
     });
   };
@@ -24,8 +56,8 @@ export const PlantScreen: React.FC = () => {
         "INSERT INTO data(date, sensor_values) values(?,?);",
         [date, values],
 
-        (_tx, result) => {
-          console.log(result);
+        (_tx, _result) => {
+          // console.log(result);
         },
 
         (_tx, error) => {
@@ -60,8 +92,37 @@ export const PlantScreen: React.FC = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Visualisation count={150} />
-      <Text>Stored Records Count: {recordsCount} </Text>
+      {/* <Visualisation count={150} /> */}
+
+      {downloadedData.humidity.length > 0 && (
+        <>
+          <Title>Humidity</Title>
+          <Chart
+            timestamps={downloadedData.timestamps.slice(-50)}
+            data={downloadedData.humidity.slice(-50)}
+          />
+        </>
+      )}
+
+      {downloadedData.humidity.length > 0 && (
+        <>
+          <Title>Temperature</Title>
+          <Chart
+            timestamps={downloadedData.timestamps.slice(-50)}
+            data={downloadedData.temperature.slice(-50)}
+          />
+        </>
+      )}
+
+      {downloadedData.voltage.length > 0 && (
+        <>
+          <Title>Voltage</Title>
+          <Chart
+            timestamps={downloadedData.timestamps.slice(-50)}
+            data={downloadedData.voltage.slice(-50)}
+          />
+        </>
+      )}
       <Button icon="download" mode="contained" onPress={downloadPlantData}>
         Download plant data
       </Button>

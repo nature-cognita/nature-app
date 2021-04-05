@@ -4,9 +4,9 @@ import SerialPort from "serialport";
 const PLANT_ID = "ckmux79e7002s0961irqmfzhq";
 
 const sensorIds = [
-  "ckmux7l0b00390961jfgw9im1",
-  "ckmux8cnr003y096102a48kzh",
-  "ckmux8l6d004c0961fma03b1q",
+  "ckmux7l0b00390961jfgw9im1", // Humidity
+  "ckmux8cnr003y096102a48kzh", // Temperature
+  "ckmux8l6d004c0961fma03b1q", // Voltage
 ];
 
 type SensorRecord = {

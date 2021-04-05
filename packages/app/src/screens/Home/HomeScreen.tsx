@@ -1,10 +1,15 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { Badge, Button, Text, Headline, DataTable } from "react-native-paper";
 import { gql, useMutation } from "@apollo/client";
-import { DatabaseContext, recordsCountAtom } from "../../store";
+import {
+  DatabaseContext,
+  recordsCountAtom,
+  downloadedDataAtom,
+} from "../../store";
 import { useAtom } from "jotai";
 import { Visualisation } from "../../components";
+import { ProgressChart } from "react-native-chart-kit";
 
 type SensorRecord = {
   id: string;
@@ -22,6 +27,18 @@ const ADD_SENSOR_RECORDS = gql`
 export const HomeScreen: React.FC = () => {
   const { db } = useContext(DatabaseContext);
   const [recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
+  const [downloadedData, setDownloadedData] = useAtom(downloadedDataAtom);
+
+  const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
 
   const cleanupCache = () => {
     console.log("Cleaning up cache");
@@ -33,6 +50,12 @@ export const HomeScreen: React.FC = () => {
     });
 
     setRecordsCount(0);
+    setDownloadedData({
+      timestamps: [],
+      humidity: [],
+      temperature: [],
+      voltage: [],
+    });
   };
 
   const [storeRecords] = useMutation(ADD_SENSOR_RECORDS);
@@ -49,7 +72,6 @@ export const HomeScreen: React.FC = () => {
             const item = result.rows.item(i);
 
             const date = item["date"];
-            console.log(date);
 
             const sensorValues: Array<SensorRecord> = JSON.parse(
               item["sensor_values"]
@@ -62,8 +84,6 @@ export const HomeScreen: React.FC = () => {
                 value: record.value,
               };
             });
-
-            console.log(records);
 
             await storeRecords({
               variables: { input: { records } },
@@ -82,6 +102,18 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Headline>You are storing {recordsCount} records</Headline>
+      <DataTable>
+        <DataTable.Header>
+          <DataTable.Title>Plant Name</DataTable.Title>
+          <DataTable.Title numeric>Records</DataTable.Title>
+        </DataTable.Header>
+
+        <DataTable.Row>
+          <DataTable.Cell>Electromuseum</DataTable.Cell>
+          <DataTable.Cell numeric>{recordsCount}</DataTable.Cell>
+        </DataTable.Row>
+      </DataTable>
       <Button icon="upload" mode="contained" onPress={uploadData}>
         Upload Collected Data
       </Button>
