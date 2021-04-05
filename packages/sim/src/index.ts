@@ -1,22 +1,13 @@
 import express from "express";
 import SerialPort from "serialport";
-// import Readline from "@serialport/parser-readline";
 
-const Readline = SerialPort.parsers.Readline;
-const sPort = new SerialPort(
-  "/dev/ttyACM0",
-  {
-    baudRate: 9600,
-  },
-  (err) => {
-    console.error(err);
-  }
-);
+const PLANT_ID = "ckmux79e7002s0961irqmfzhq";
 
-const parser = sPort.pipe(new Readline({ delimiter: "\r\n" }));
-
-const app = express();
-const port = 4000;
+const sensorIds = [
+  "ckmux7l0b00390961jfgw9im1",
+  "ckmux8cnr003y096102a48kzh",
+  "ckmux8l6d004c0961fma03b1q",
+];
 
 type SensorRecord = {
   id: string;
@@ -25,33 +16,60 @@ type SensorRecord = {
 
 let storedData: { [id: string]: Array<SensorRecord> } = {};
 
-const sensorIds = [
-  "ckmux7l0b00390961jfgw9im1",
-  "ckmux8cnr003y096102a48kzh",
-  "ckmux8l6d004c0961fma03b1q",
-];
+const app = express();
+const port = 4000;
 
-const PLANT_ID = "ckmux79e7002s0961irqmfzhq";
+if (process.env.NODE_ENV == "production") {
+  const Readline = SerialPort.parsers.Readline;
 
-// Switches the port into "flowing mode"
-parser.on("data", (rawData) => {
-  const data = rawData.toString("utf8");
-  console.log("Data:", data);
+  const sPort = new SerialPort(
+    "/dev/ttyACM0",
+    {
+      baudRate: 9600,
+    },
+    (err) => {
+      console.error(err);
+    }
+  );
 
-  const [humidity, temperature, voltage] = data.split(" ");
-  const [humidityId, temperatureId, voltageId] = sensorIds;
+  const parser = sPort.pipe(new Readline({ delimiter: "\r\n" }));
 
-  const timestamp = new Date().toISOString();
-  const records: Array<SensorRecord> = [
-    { id: humidityId, value: parseFloat(humidity) },
-    { id: temperatureId, value: parseFloat(temperature) },
-    { id: voltageId, value: parseFloat(voltage) },
-  ];
+  // Switches the port into "flowing mode"
+  parser.on("data", (rawData) => {
+    const data = rawData.toString("utf8");
+    console.log("Received data:", data);
 
-  storedData[timestamp] = records;
+    const [humidity, temperature, voltage] = data.split(" ");
+    const [humidityId, temperatureId, voltageId] = sensorIds;
 
-  console.log(`Added new records: ${records}`);
-});
+    const timestamp = new Date().toISOString();
+    const records: Array<SensorRecord> = [
+      { id: humidityId, value: parseFloat(humidity) },
+      { id: temperatureId, value: parseFloat(temperature) },
+      { id: voltageId, value: parseFloat(voltage) },
+    ];
+
+    storedData[timestamp] = records;
+
+    console.log(`Added new records: ${records}`);
+  });
+} else {
+  const generateData = () => {
+    const timestamp = new Date().toISOString();
+    const records: Array<SensorRecord> = [];
+
+    sensorIds.forEach((id) => {
+      const value = Math.random();
+      records.push({ id, value });
+    });
+
+    storedData[timestamp] = records;
+
+    console.log("Added new records:");
+  };
+
+  setInterval(generateData, 5000);
+}
 
 const returnData = () => {
   const data = { ...storedData };
@@ -61,8 +79,6 @@ const returnData = () => {
   console.log(data);
   return { id: PLANT_ID, data };
 };
-
-// setInterval(generateData, 5000);
 
 app.get("/", (_req, res) => res.send(returnData()));
 
