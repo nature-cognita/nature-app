@@ -6,7 +6,7 @@ import { DatabaseContext, recordsCountAtom } from "../../store";
 import { useContext } from "react";
 import { useAtom } from "jotai";
 import { Visualisation } from "../../components";
-const PLANT_URL = "http://localhost:4000";
+const PLANT_URL = "http://192.168.31.181:4000"; //TODO: Move to env variable
 
 export const PlantScreen: React.FC = () => {
   const [recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
