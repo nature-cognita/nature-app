@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Button, Text, Headline, Title } from "react-native-paper";
+import { Button, Title } from "react-native-paper";
 import * as SQLite from "expo-sqlite";
 import {
   DatabaseContext,
@@ -9,11 +9,11 @@ import {
 } from "../../store";
 import { useContext } from "react";
 import { useAtom } from "jotai";
-import { Visualisation, Chart } from "../../components";
+import { Chart } from "../../components";
 const PLANT_URL = "http://localhost:4000"; //TODO: Move to env variable
 
 export const PlantScreen: React.FC = () => {
-  const [recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
+  const [_recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
   const [downloadedData, setDownloadedData] = useAtom(downloadedDataAtom);
 
   const { db } = useContext(DatabaseContext);

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { Badge, Button, Text, Headline, DataTable } from "react-native-paper";
+import { Button, Headline, DataTable } from "react-native-paper";
 import { gql, useMutation } from "@apollo/client";
 import {
   DatabaseContext,
@@ -8,8 +8,6 @@ import {
   downloadedDataAtom,
 } from "../../store";
 import { useAtom } from "jotai";
-import { Visualisation } from "../../components";
-import { ProgressChart } from "react-native-chart-kit";
 
 type SensorRecord = {
   id: string;
@@ -51,10 +49,10 @@ export const HomeScreen: React.FC = () => {
 
     setRecordsCount(0);
     setDownloadedData({
-      timestamps: [],
-      humidity: [],
-      temperature: [],
-      voltage: [],
+      timestamps: [0],
+      humidity: [0],
+      temperature: [0],
+      voltage: [0],
     });
   };
 
