@@ -10,7 +10,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Provider as JotaiProvider } from "jotai";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000/gql",
+  uri: "https://cognita.dev/gql",
   cache: new InMemoryCache(),
 });
 
