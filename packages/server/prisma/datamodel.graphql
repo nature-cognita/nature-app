@@ -38,6 +38,8 @@ enum SensorType {
   HUMIDITY
   LIGHT
   NOISE
+  TEMPERATURE
+  VOLTAGE
 }
 
 enum SensorUsage {
