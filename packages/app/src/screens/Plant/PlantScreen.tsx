@@ -91,7 +91,9 @@ export const PlantScreen: React.FC = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{ flex: 1, justifyContent: "space-around", alignItems: "center" }}
+    >
       {/* <Visualisation count={150} /> */}
 
       {downloadedData.humidity.length > 0 && (

@@ -16,7 +16,7 @@ export const Chart = ({ timestamps, data }) => {
       withInnerLines={false}
       withVerticalLabels={false}
       width={Dimensions.get("window").width - 10} // from react-native
-      height={150}
+      height={120}
       chartConfig={{
         backgroundColor: "#000000",
         // backgroundGradientFrom: "#000000",

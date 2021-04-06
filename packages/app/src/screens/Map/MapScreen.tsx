@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, SafeAreaView } from "react-native";
 import { Text } from "react-native-paper";
 import MapView, { Marker, Region, Callout } from "react-native-maps";
 import * as Permissions from "expo-permissions";
@@ -223,7 +223,7 @@ export const MapScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {error && <Text style={{ color: "white" }}>Error: {error.message}</Text>}
       {!error && (
         <MapView
@@ -250,7 +250,7 @@ export const MapScreen: React.FC = () => {
           ))}
         </MapView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -263,6 +263,6 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height + 30,
+    height: Dimensions.get("window").height - 55,
   },
 });
