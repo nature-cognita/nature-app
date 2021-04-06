@@ -2,12 +2,12 @@
   "name": "nature-server",
   "version": "0.0.1",
   "scripts": {
-    "deploy": "PRISMA_ENDPOINT=http://prisma:4466 prisma1 deploy",
+    "deploy": "PRISMA_ENDPOINT=http://localhost:4466 prisma1 deploy",
     "deploy:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma1 deploy",
     "reset:dev": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma1 reset --force",
     "dev": "adb reverse tcp:3000 tcp:3000 && yarn generate && cross-env NODE_ENV=development ts-node-dev -r dotenv-flow/config -r tsconfig-paths/register src/index.ts",
     "generate": "cross-env PRISMA_ENDPOINT=http://localhost:4466 prisma1 generate",
-    "start": "yarn deploy && yarn generate && NODE_ENV=production ts-node -T -r dotenv-flow/config -r tsconfig-paths/register src/index.ts"
+    "start": "yarn deploy && yarn generate && NODE_ENV=production PRISMA_ENDPOINT=http://localhost:4466 ts-node -T -r dotenv-flow/config -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
     "apollo-server-express": "2.22.1",
