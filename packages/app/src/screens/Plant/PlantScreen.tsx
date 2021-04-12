@@ -10,7 +10,7 @@ import {
 import { useContext } from "react";
 import { useAtom } from "jotai";
 import { Chart } from "../../components";
-const PLANT_URL = "http://localhost:4000"; //TODO: Move to env variable
+const PLANT_URL = "http://192.168.3.126:4000"; //TODO: Move to env variable
 
 export const PlantScreen: React.FC = () => {
   const [_recordsCount, setRecordsCount] = useAtom(recordsCountAtom);
